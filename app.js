@@ -2,7 +2,10 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const leiRouter = require('./routes/leiRoutes');
+const cors = require('cors');
+
 app.use(express.json());
+app.use(cors);
 
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
