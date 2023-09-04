@@ -7,10 +7,18 @@ const leiSchema = new mongoose.Schema({
         unique: false
     },
     artigos: {
-        type: Number,
-        required: true
+        type: Number
     },
     dados: {
+        type: Array,
+        required: true,
+        default: []
+    },
+    materias: {
+        type: Array,
+        default: []
+    },
+    alertas: {
         type: Array,
         default: []
     }
