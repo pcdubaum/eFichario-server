@@ -24,9 +24,11 @@ const DB = process.env.DATABASE.replace(
     '<PASSWORD>',
     process.env.PASSWORD
 ).replace(
-    '<USERNAME>',
-    process.env.USERNAME
-);
+    '<DBUSERNAME>',
+    process.env.DBUSERNAME
+).replace(
+    '<DOMAIN>',
+    process.env.DOMAIN);
 
 // Connect to the MongoDB database using Mongoose
 // Conecta-se ao banco de dados MongoDB usando o Mongoose

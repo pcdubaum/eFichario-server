@@ -1,53 +1,25 @@
-const { query } = require('express');
 const Lei = require('./../models/leiModel');
+const APIFeature = require('./utils/apiFeatures');
 
 // Rota para obter todas as leis do banco de dados com apenas _id e nome
 exports.getAllLeis = async (req, res) => {
     try {
-        // Nossa query de pesquisa recebida pela api
-        const queryObj = {...req.query};
-        const camposExcluidos = ['page', 'sort', 'limit', 'fields'];
-        camposExcluidos.forEach(el => delete queryObj[el]);
+         // Execute query
+        const features = new APIFeature(Lei.find(), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate();
 
-        // Substituir operadores de comparação por operadores do MongoDB
-        let queryStr = JSON.stringify(queryObj);
-        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
-        let query = Lei.find(queryObj);
-
-        // Sorting
-        if(req.query.sort){
-            const sortBy = req.sort.split(',').join(' ');
-            query = query.sort(sortBy);
-        }
-
-        // Field limiting
-        if(req.query.fields) {
-            const fields = req.query.fields.split(',').join(' ');
-            query = query.select(fields)
-        }
-        else{
-            // Remoce o campo __v
-            query = query.select('-__v');
-        }
-
-        // Pagination
-        const page = req.query.page * 1 || 1;
-        const limit = req.query.limit * 1 || 50;
-        const skip = (page - 1) * limit
-        query = query.skip(skip).limit(limit);
-
-        if(req.query.page){
-            const numLeis = await Lei.countDocuments();
-            if(skip >= numLeis) 
-                throw new Error('This page does not exist');
-        }
-
-        const lei = await query;
+        const lei = await features.query;
 
         // Responde com um código de status 200 e um objeto JSON contendo as leis encontradas
         res.status(200).json({ lei });
     } catch (err) {
+        res.status(304).json({
+            erro: 'Vixi'
+        })
+
         // Se ocorrer um erro, responde com um código de status 404 e uma mensagem de erro
         res.status(404).json({
             status: 'erro ' + err,
@@ -75,6 +47,7 @@ exports.getLei = async (req, res) => {
 
 // Rota para criar uma nova lei
 exports.createLei = async (req, res) => {
+    console.log(req.body);
     try {
         // Cria uma nova lei com base nos dados do corpo da solicitação
         const newLei = await Lei.create(req.body);
@@ -100,7 +73,8 @@ exports.updateLei = async (req, res) => {
     try {
         // Atualiza uma lei existente com base no ID fornecido e nos dados do corpo da solicitação
         const lei = await Lei.findByIdAndUpdate(req.params.id, req.body, {
-            new: true
+            new: true,
+            runValidators: true
         });
 
         // Responde com um código de status 200 e um objeto JSON contendo a lei atualizada
