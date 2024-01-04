@@ -10,8 +10,7 @@ dotenv.config({ path: './config.env' });
 // Import the Express application configured from the app.js file
 const app = require('./app');
 
-// Print the application's environment (usually 'development' or 'production')
-console.log(app.get('env'));
+
 
 // Define the database URL, replacing the password and username with environment variables
 const DB = process.env.DATABASE.replace(

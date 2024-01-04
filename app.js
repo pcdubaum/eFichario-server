@@ -17,6 +17,9 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
+// Print the application's environment (usually 'development' or 'production')
+console.log(app.get('env'));
+
 // Create routes for Leis, which will be managed by the router defined in leiRoutes
 app.use('/api/v2/leis', leiRouter);
 
