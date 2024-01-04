@@ -1,5 +1,5 @@
 const Lei = require('./../models/leiModel');
-const APIFeature = require('./utils/apiFeatures');
+const APIFeature = require('../utils/apiFeatures');
 
 // Rota para obter todas as leis do banco de dados com apenas _id e nome
 exports.getAllLeis = async (req, res) => {
@@ -65,6 +65,8 @@ exports.createLei = async (req, res) => {
             status: 'erro ' + err,
             message: err
         });
+
+        console.log(err);
     }
 };
 
@@ -111,3 +113,13 @@ exports.deleteLei = async (req, res) => {
         });
     }
 };
+
+exports.getLeiStats = async (req, res) =>{
+    try{
+        const stats = Lei.aggregate([
+
+        ])
+    }catch(err){
+
+    }
+}

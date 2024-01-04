@@ -20,7 +20,8 @@ const leiSchema = new mongoose.Schema({
     dados: {
         type: Array,
         required: true,
-        default: []
+        default: [],
+        min : [1, 'Dados precisão ter pelo menos 1 artigo']
     },
 
     // Matérias relacionadas à lei, é um array com valor padrão vazio
@@ -62,13 +63,24 @@ leiSchema.pre('save', function(next) {
     next(); // Chama a próxima função no fluxo (no caso, a função de salvar)
 })
 
+
+
 // Define uma função para ser executada antes de salvar um documento da coleção "Lei"
+
+leiSchema.pre(/^find/, function(next)  {
+    this.find({ teste : {$ne: true}});
+    next();
+});
+
+// Define uma função para ser executada depois de salvar um documento da coleção "Lei"
+
 leiSchema.post(/^find/, function(doc, next) {
     if (process.env.NODE_ENV === 'development')
         console.log(`Query executada em: ${ Date.now() - this.start } milisegundos`);
 
         next();
 })
+
 
 // Cria o modelo "Lei" a partir do esquema e o exporta para ser usado em outros lugares
 const Lei = mongoose.model('Lei', leiSchema);
