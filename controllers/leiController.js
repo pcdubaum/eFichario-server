@@ -1,9 +1,11 @@
 const Lei = require('./../models/leiModel');
 const APIFeature = require('../utils/apiFeatures');
+const cathAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 
 // Rota para obter todas as leis do banco de dados com apenas _id e nome
-exports.getAllLeis = async (req, res) => {
-    try {
+exports.getAllLeis = cathAsync(async (req, res, next) => {
+
          // Execute query
         const features = new APIFeature(Lei.find(), req.query)
         .filter()
@@ -15,69 +17,52 @@ exports.getAllLeis = async (req, res) => {
 
         // Responde com um código de status 200 e um objeto JSON contendo as leis encontradas
         res.status(200).json({ lei });
-    } catch (err) {
-        res.status(304).json({
-            erro: 'Vixi'
-        })
-
-        // Se ocorrer um erro, responde com um código de status 404 e uma mensagem de erro
-        res.status(404).json({
-            status: 'erro ' + err,
-            message: 'Pegar lei específica'
-        });
-    }
-};
+});
 
 // Rota para obter uma lei específica pelo seu ID
-exports.getLei = async (req, res) => {
-    try {
+exports.getLei = cathAsync(async (req, res, next) => {
+
         // Consulta o banco de dados para encontrar uma lei pelo seu ID
         const lei = await Lei.findById(req.params.id);
 
+        if(!lei){ new AppError('Não foi possível encontrar o recursos', 404)};
+
         // Responde com um código de status 200 e um objeto JSON contendo a lei encontrada
         res.status(200).json({ lei });
-    } catch (err) {
-        // Se ocorrer um erro, responde com um código de status 404 e uma mensagem de erro
-        res.status(404).json({
-            status: 'erro ' + err,
-            message: 'Pegar lei específica'
-        });
-    }
-};
+   
+    });
+
+
 
 // Rota para criar uma nova lei
-exports.createLei = async (req, res) => {
-    console.log(req.body);
-    try {
+exports.createLei = cathAsync(async (req, res, next) => {
+
         // Cria uma nova lei com base nos dados do corpo da solicitação
         const newLei = await Lei.create(req.body);
+
+        if(!newLei){ new AppError('Não foi possível encontrar o recursos', 404)};
 
         // Responde com um código de status 200 e um objeto JSON contendo a nova lei criada
         res.status(200).json({
             status: "sucesso",
             data: {
                 lei: newLei
-            }
-        });
-    } catch (err) {
-        // Se ocorrer um erro, responde com um código de status 400 e uma mensagem de erro
-        res.status(400).json({
-            status: 'erro ' + err,
-            message: err
-        });
+        }})
+});
+    
 
-        console.log(err);
-    }
-};
+
 
 // Rota para atualizar uma lei existente pelo seu ID
-exports.updateLei = async (req, res) => {
-    try {
+exports.updateLei = cathAsync(async (req, res, next) => {
+  
         // Atualiza uma lei existente com base no ID fornecido e nos dados do corpo da solicitação
         const lei = await Lei.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
         });
+
+        if(!lei){ new AppError('Não foi possível encontrar o recursos', 404)};
 
         // Responde com um código de status 200 e um objeto JSON contendo a lei atualizada
         res.status(200).json({
@@ -86,18 +71,11 @@ exports.updateLei = async (req, res) => {
                 lei: lei
             }
         });
-    } catch (err) {
-        // Se ocorrer um erro, responde com um código de status 404 e uma mensagem de erro
-        res.status(404).json({
-            status: 'erro ' + err,
-            message: 'Atualizar lei específica'
-        });
-    }
-};
+   
+});
 
 // Rota para deletar uma lei pelo seu ID
-exports.deleteLei = async (req, res) => {
-    try {
+exports.deleteLei = cathAsync(async (req, re, next) => {
         // Remove uma lei pelo seu ID fornecido
         await Lei.findByIdAndRemove(req.params.id);
 
@@ -105,21 +83,11 @@ exports.deleteLei = async (req, res) => {
         res.status(200).json({
             status: "sucesso",
         });
-    } catch (err) {
-        // Se ocorrer um erro, responde com um código de status 404 e uma mensagem de erro
-        res.status(404).json({
-            status: 'erro ' + err,
-            message: 'Deletar lei específica'
-        });
-    }
-};
+   
+});
 
-exports.getLeiStats = async (req, res) =>{
-    try{
-        const stats = Lei.aggregate([
+exports.getLeiStats = cathAsync(async (req, res, next) =>{
 
-        ])
-    }catch(err){
-
-    }
-}
+        const stats = Lei.aggregate([])
+   
+});
