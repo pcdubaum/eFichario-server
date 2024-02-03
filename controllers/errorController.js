@@ -5,6 +5,15 @@ const handleCastErrorDB = err => {
   return new AppError(message, 400);
 };
 
+const handleDuplicatedEmail = () => {
+  res.status(err.statusCode).json({
+    status: err.status,
+    message: err.message,
+    errorCode: 1
+  }
+  )};
+
+
 const sendErrorDev = (err, res) => {
     res.status(err.statusCode).json({
       status: err.status,
@@ -35,6 +44,12 @@ const sendErrorDev = (err, res) => {
     }
   };
 
+  const handleJWTError = () =>
+    new AppError('Erro, por favor faça o login novamente. (token invalido)', 401);
+
+  const handleJWTExpiredError = () =>
+    new AppError('Erro, por favor faça o login novamente. (token expirado)', 401);
+
 module.exports = (err, req, res, next) => {
     // console.log(err.stack);
   
@@ -47,9 +62,10 @@ module.exports = (err, req, res, next) => {
       let error = { ...err };
   
       if (error.name === 'CastError') error = handleCastErrorDB(error);
-      if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-      if (error.name === 'ValidationError')
-        error = handleValidationErrorDB(error);
+      if (error.code === 11000) error = handleDuplicatedEmail(error);
+      if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
+      if (error.name === 'JsonWebTokenError') error = handleJWTError();
+      if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
   
       sendErrorProd(error, res);
     }
