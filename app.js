@@ -13,6 +13,7 @@ const globalErrorHandler = require('./controllers/errorController');
 
 const leiRouter = require('./routes/leiRoutes');
 const usuarioRouter = require('./routes/usuariosRoutes');
+const materiaRouter = require('./routes/materiaRoute');
 
 const app = express();
 
@@ -62,7 +63,8 @@ app.use(cors());
 
 // Create routes for Leis, which will be managed by the router defined in leiRoutes
 app.use('/api/v2/leis', leiRouter);
-app.use('/api/v2/usuario', usuarioRouter);
+app.use('/api/v2/usuarios', usuarioRouter);
+app.use('/api/v2/materias', materiaRouter);
 
 // Print the application's environment (usually 'development' or 'production')
 console.log(app.get('env'));

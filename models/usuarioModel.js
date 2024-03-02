@@ -67,7 +67,7 @@ usuarioSchema.pre('save', async function(next) {
   if(!this.isModified('password')) return next();
 
   // Hash do password com custo de 12
-  this.password = await bcrypt.hash(this.password, 10);
+  //this.password = await bcrypt.hash(this.password, 10);
 
   // Passamos undefined para que o campo não seja gravado no BD
   this.passwordConfirm = undefined;
