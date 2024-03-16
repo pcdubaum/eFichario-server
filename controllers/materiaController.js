@@ -32,3 +32,32 @@ exports.getMateria = cathAsync(async (req, res, next) => {
     res.status(200).json({ materia: materia });
 
 });
+
+exports.newMateria = cathAsync(async (req, res) => {
+
+     // Cria uma nova materia com base nos dados do corpo da solicitação
+     const newMateria = await Materia.create(req.body);
+
+     if(!newMateria){ 
+        new AppError('Não foi possível encontrar o recursos', 404)
+    };
+
+     // Responde com um código de status 200 e um objeto JSON contendo a nova lei criada
+     res.status(200).json({
+         status: "sucesso",
+         data: newMateria})
+})
+
+exports.deleteMateria = cathAsync(async (req, res, next) => {
+
+    const user = await Materia.findByIdAndDelete(req.params.id)
+
+    if (!user) {
+      return next(new AppError('Não há usuário com essa ID', 404));
+    }
+
+    res.status(204).json({
+      status: 'success',
+      data: null
+    });
+  });

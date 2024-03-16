@@ -5,37 +5,50 @@ const materiasSchema = new mongoose.Schema({
      // Nome da lei, é uma string obrigatória e não única
      nome: {
         type: String,
-        required: [true, 'Toda lei precisa ter um nome.'], // Mensagem de erro personalizada se o nome não for fornecido
+        required: [true, 'Toda materia precisa ter um nome.'], // Mensagem de erro personalizada se o nome não for fornecido
         unique: false, // Não é necessário que o nome seja único
         trim: true, // Os espaçoes em branco serão apagados
-        maxlenght: [64, 'O Nome da lei tem que ter menos de 64 letras'], // Mensagem de aviso para nome muito grande
+        maxlenght: [64, 'O Nome da materia tem que ter menos de 64 letras'], // Mensagem de aviso para nome muito grande
         minlenght: [4, 'Nome muito pequeno, tente usar um nome um pouco maior'] // Mensagem de avido para nome muito pequeno
     },
 
-    tema: [String],
+    tema: String,
 
     concursos: {
         type: Array,
-        required: true,
-        default: [],
-        min : [1, 'Dados precisão ter pelo menos 1 artigo']
+        default: []
     },
 
-    autor: [String],
-
-    criadoEm : [Date],
-
-    editadoEm: [Number],
+    autor: String,
+    criadoEm : Date,
+    editadoEm: Date,
 
     materia: {
         type: Array,
-        required: true,
-        default: [],
-        min : [1, 'Dados precisão ter pelo menos 1 artigo']
+        default: []
+    },
+
+    conteudo: {
+        type: Array,
+        default: []
     },
 })
 
-// Cria o modelo "Lei" a partir do esquema e o exporta para ser usado em outros lugares
+
+
+// Define uma função para ser executada antes de salvar um documento da coleção "Lei"
+materiasSchema.pre('save', function(next) {
+    // Define a data de criação como a data atual antes de salvar
+    this.criadoEm = Date.now();
+    this.editadoEm = Date.now();
+
+    if (process.env.NODE_ENV === 'development')
+        this.start = Date.now();
+
+    next(); // Chama a próxima função no fluxo (no caso, a função de salvar)
+})
+
+// Cria o modelo "Materia" a partir do esquema e o exporta para ser usado em outros lugares
 const Materia = mongoose.model('materia', materiasSchema);
 
 module.exports = Materia;

@@ -4,11 +4,13 @@ const materiaController = require('../controllers/materiaController');
 const router = express.Router();
 
 router.route('/')
-.get(materiaController.getAllMaterias);
+.get(materiaController.getAllMaterias)
+.post(materiaController.newMateria);
 
 router
 .route('/:id')
-.get(materiaController.getMateria);
+.get(materiaController.getMateria)
+.delete(materiaController.deleteMateria);
 
 
 
