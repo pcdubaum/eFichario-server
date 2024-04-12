@@ -13,13 +13,16 @@ const materiasSchema = new mongoose.Schema({
     },
 
     tema: String,
-
+    programa: String,
+    topico: String,
+    cargo: String,
     concursos: {
         type: Array,
-        default: []
+        default: ['']
     },
 
     autor: String,
+    autorId: String,
     criadoEm : Date,
     editadoEm: Date,
 

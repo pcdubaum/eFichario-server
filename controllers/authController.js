@@ -47,8 +47,9 @@ const createSendToken = (user, statusCode, res) => {
   });
 
   exports.login = catchAsync(async (req, res, next) => {
+
     const { email, password } = req.body;
-  
+ 
     // 1) Check if email and password exist
     if (!email || !password) {
       return next(new AppError('Please provide email and password!', 400));
@@ -67,13 +68,15 @@ const createSendToken = (user, statusCode, res) => {
   exports.protect = catchAsync(async (req, res, next) => {
     // 1) Getting token and check of it's there
     let token;
+
+    
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith('Bearer')
     ) {
       token = req.headers.authorization.split(' ')[1];
+      
     }
-    
   
     if (!token) {
       return next(
@@ -119,4 +122,11 @@ const createSendToken = (user, statusCode, res) => {
       next();
     };
   };
+
+  exports.logoff = catchAsync (async (req, res, next) => {
+    
+      req.session = null;
+
+      res.send({});
+    });
   
