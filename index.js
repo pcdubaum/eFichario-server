@@ -1,15 +1,8 @@
-// Import the Mongoose library for interacting with MongoDB
-const mongoose = require('mongoose');
 
-// Import the dotenv library to load environment variables from the config.env file
-const dotenv = require('dotenv');
-
-// Configure dotenv to load environment variables from the config.env file
-dotenv.config({ path: './config.env' });
-
-// Import the Express application configured from the app.js file
-const app = require('./app');
-
+const mongoose = require('mongoose'); // Import the Mongoose library for interacting with MongoDB
+const dotenv = require('dotenv'); // Import the dotenv library to load environment variables from the config.env file
+dotenv.config({ path: './config.env' }); // Configure dotenv to load environment variables from the config.env file
+const app = require('./app'); // Import the Express application configured from the app.js file
 
 // Define the database URL, replacing the password and username with environment variables
 const DB = process.env.DATABASE.replace(
@@ -35,14 +28,14 @@ mongoose.connect(DB, {
 // Start the Express server and make it listen on the port specified in the environment variables
 const server = app.listen(process.env.PORT, (err) => {
     if (err)
-    if (err == MongooseServerSelectionError)
-        console.error('Error starting the server:', err); // Start the server and provide a callback function
-    else
-        console.log('Server is running on port: ' + process.env.PORT); // Log a message indicating the server is running
+        if (err == MongooseServerSelectionError)
+            console.error('Error starting the server:', err); // Start the server and provide a callback function
+        else
+            console.log('Server is running on port: ' + process.env.PORT); // Log a message indicating the server is running
 });
 
 // Catch any unhandled rejection
-process.on('unhandledRejection', err =>{
+process.on('unhandledRejection', err => {
     console.log(err.name, err.message);
     console.log('Algo deu errado, desligando...')
     server.close(() => {

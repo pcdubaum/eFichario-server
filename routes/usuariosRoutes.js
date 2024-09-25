@@ -16,9 +16,14 @@ router
 .get(usuarioController.pegarTodosUsuarios)
 .post(authController.protect, usuarioController.createUser);
 
+// Protect all routes after this middleware
+router.use(authController.protect);
+
 router
-.route('/:id')
+.route('/:id', authController.restrictTo('admin', 'dev'))
 .delete(usuarioController.removeUser);
+
+router.get('/me', usuarioController.getMe, usuarioController.getUser);
 
 module.exports = router;
 
