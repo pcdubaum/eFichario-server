@@ -79,6 +79,7 @@ const createSendToken = (user, statusCode, res) => {
     }
   
     if (!token) {
+      console.log('Sem Token!')
       return next(
         new AppError('Usuário não encontrado! Por favor faça o login novamente.', 401)
       );
