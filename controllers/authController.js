@@ -13,17 +13,16 @@ const signToken = id => {
 };
 
 // Send Token
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
     const token = signToken(user._id);
-    const cookieOptions = {
-      expiresIn: new Date(
-        Date.now() + process.env.JWT_EXPIRES_IN * 24 * 60 * 60 * 1000
+      
+    res.cookie('jwt', token, {
+      expires: new Date(
+        Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
       ),
-      httpOnly: true
-    };
-    if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-  
-    res.cookie('jwt', token, cookieOptions);
+      httpOnly: true,
+      secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
+    });
   
     // Remove password from output
     user.password = undefined;
@@ -43,7 +42,7 @@ const createSendToken = (user, statusCode, res) => {
       password: req.body.password,
     });
   
-    createSendToken(newUsuario, 201, res);
+    createSendToken(newUsuario, 201, req,res);
   });
 
   exports.login = catchAsync(async (req, res, next) => {
@@ -62,7 +61,7 @@ const createSendToken = (user, statusCode, res) => {
     }
   
     // 3) If everything ok, send token to client
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
   });
 
   exports.protect = catchAsync(async (req, res, next) => {
