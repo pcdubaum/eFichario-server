@@ -16,10 +16,7 @@ const DB = process.env.DATABASE.replace(
     process.env.DOMAIN);
 
 // Connect to the MongoDB database using Mongoose
-mongoose.connect(DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(con => {
+mongoose.connect(DB, {}).then(con => {
     console.log('DB Conectada'); // Success log message on successful connection - Mensagem de log de sucesso na conexão
 }).catch(error => {
     console.error('Erro na conexão com o banco de dados:', error); //// Log message in case of a connection error - Mensagem de log em caso de erro na conexão
