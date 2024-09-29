@@ -19,6 +19,8 @@ const materiaRouter = require('./routes/materiaRoute');
 
 const app = express();
 
+app.use(cors());
+
 // 1) GLOBAL MIDDLEWARES
 // Set security HTTP headers
 app.use(helmet());
@@ -59,7 +61,7 @@ app.use(
 
 // Configure the Express application to handle JSON data and enable CORS
 app.use(express.static(`${__dirname}/public`));
-app.use(cors());
+
 
 // Create routes for Leis, which will be managed by the router defined in leiRoutes
 app.use('/api/v2/leis', leiRouter);

@@ -15,17 +15,22 @@ const signToken = id => {
 // Send Token
 const createSendToken = (user, statusCode, req, res) => {
     const token = signToken(user._id);
+
+    console.log('Token: ' + token);
       
     res.cookie('jwt', token, {
       expires: new Date(
         Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
       ),
-      httpOnly: true,
-      secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
+      httpOnly: true
     });
+    if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
   
+    console.log('Remove Password');
     // Remove password from output
     user.password = undefined;
+
+    console.log('Send Data');
   
     res.status(statusCode).json({
       status: 'success',
@@ -60,6 +65,7 @@ const createSendToken = (user, statusCode, req, res) => {
       return next(new AppError('Incorrect email or password', 401));
     }
   
+    console.log('createSendToken');
     // 3) If everything ok, send token to client
     createSendToken(user, 200, req, res);
   });
