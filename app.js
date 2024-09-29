@@ -16,7 +16,13 @@ const leiRouter = require('./routes/leiRoutes');
 const usuarioRouter = require('./routes/usuariosRoutes');
 const materiaRouter = require('./routes/materiaRoute');
 
+
+const fs = require('fs');
+
 const app = express();
+
+
+
 
 // 1) GLOBAL MIDDLEWARES
 // Set security HTTP headers
