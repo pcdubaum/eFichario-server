@@ -15,8 +15,6 @@ const signToken = id => {
 // Send Token
 const createSendToken = (user, statusCode, req, res) => {
     const token = signToken(user._id);
-
-    console.log('Token: ' + token);
       
     res.cookie('jwt', token, {
       expires: new Date(
@@ -24,13 +22,13 @@ const createSendToken = (user, statusCode, req, res) => {
       ),
       httpOnly: true
     });
-    if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+    if (process.env.NODE_ENV === 'production') {
+      secure: req.secure || req.headers['x-forwarded-proto'] === 'https';
+    }
   
-    console.log('Remove Password');
     // Remove password from output
     user.password = undefined;
 
-    console.log('Send Data');
   
     res.status(statusCode).json({
       status: 'success',
@@ -65,10 +63,11 @@ const createSendToken = (user, statusCode, req, res) => {
       return next(new AppError('Incorrect email or password', 401));
     }
   
-    console.log('createSendToken');
     // 3) If everything ok, send token to client
     createSendToken(user, 200, req, res);
   });
+
+ 
 
   exports.protect = catchAsync(async (req, res, next) => {
     // 1) Getting token and check of it's there
@@ -84,7 +83,6 @@ const createSendToken = (user, statusCode, req, res) => {
     }
   
     if (!token) {
-      console.log('Sem Token!')
       return next(
         new AppError('Usuário não encontrado! Por favor faça o login novamente.', 401)
       );

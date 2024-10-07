@@ -19,7 +19,12 @@ const materiaRouter = require('./routes/materiaRoute');
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: process.env.ORIGIN, // 'http://env-8459876.sp1.br.saveincloud.net.br',//(https://your-client-app.com)
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 // 1) GLOBAL MIDDLEWARES
 // Set security HTTP headers
@@ -70,11 +75,14 @@ app.use('/api/v2/materias', materiaRouter);
 
 // Print the application's environment (usually 'development' or 'production')
 if(process.env.NODE_ENV === 'development')
-  console.log('This application is running in development mode.');
+  console.log('A aplicação está sendo executada em modo de desenvolvimento!');
+
+if(process.env.NODE_ENV === 'production')
+  console.log('A aplicação está rodando na porta: ' + process.env.PORT);
 
 // Send a erro, request should not reach this point.
 app.all('*', (req, res, next) =>{
-    next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+    next(new AppError(`Não é possível encontrar a url ${req.originalUrl} nesse server!`, 404));
 });
 
 app.use(globalErrorHandler);

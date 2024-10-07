@@ -125,8 +125,6 @@ exports.stats = cathAsync(async (req, res, next) => {
     }
   ]);
 
-  console.log('apagar');
-
   res.status(200).json({
     status: "success",
     data: {
