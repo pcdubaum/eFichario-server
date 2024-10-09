@@ -24,8 +24,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-//app.use(cors(corsOptions));
-app.use(cors);
+app.use(cors(corsOptions));
 
 // 1) GLOBAL MIDDLEWARES
 // Set security HTTP headers
