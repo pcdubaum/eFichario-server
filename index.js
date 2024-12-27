@@ -39,7 +39,7 @@ mongoose.connect(DB, {
 const server = app.listen(process.env.PORT, (err) => {
     if (err)
         if (err == MongooseServerSelectionError)
-            console.error('Error starting the server:', err); // Start the server and provide a callback function
+            console.error('Error starting the servers:', err); // Start the server and provide a callback function
         else
             console.log('Server is running on port: ' + process.env.PORT); // Log a message indicating the server is running
 });

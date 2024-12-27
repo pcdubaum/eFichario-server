@@ -21,10 +21,11 @@ const app = express();
 
 const corsOptions = {
   origin: process.env.ORIGIN, // 'http://env-8459876.sp1.br.saveincloud.net.br',//(https://your-client-app.com)
-  optionsSuccessStatus: 200,
+ optionsSuccessStatus: 200,
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
+//app.use(cors());
 
 // 1) GLOBAL MIDDLEWARES
 // Set security HTTP headers
@@ -35,7 +36,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-// Limit requests from same API
+// Limit requests from same API 
 const limiter = rateLimit({
     max: 1000,
     windowMs: 60 * 60 * 1000,
@@ -44,7 +45,7 @@ const limiter = rateLimit({
   app.use('/api', limiter);
 
 
-app.use(express.json({ limit: '100mb' })); // Body parser, reading data from body into req.body
+app.use(express.json({ limit: '100mb' })); // Body parser, reading data from body into req.bodyd
 app.use(mongoSanitize()); // Data sanitization against NoSQL query injection
 app.use(xss()); // Data sanitization against XSS
 
@@ -53,7 +54,7 @@ app.use(
     hpp({
       whitelist: [
         'concurso',
-        'ratingsQuantity',
+        'materiasd',
         'ratingsAverage',
         'maxGroupSize',
         'difficulty',
@@ -78,7 +79,7 @@ if(process.env.NODE_ENV === 'development')
   console.log('A aplicação está sendo executada em modo de desenvolvimento!');
 
 if(process.env.NODE_ENV === 'production')
-  console.log('A aplicação está rodando na porta: ' + process.env.PORT);
+  console.log('A aplicação está rodando na pordta: ' + process.env.PORT);
 
 // Send a erro, request should not reach this point.
 app.all('*', (req, res, next) =>{
