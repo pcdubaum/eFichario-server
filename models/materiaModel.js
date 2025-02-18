@@ -70,6 +70,8 @@ const materiasSchema = new mongoose.Schema({
   criadoEm: Date,
   editadoEm: Date,
   notas: Array,
+  notaMedia: Number,
+  views: Number,
 
  
 });
@@ -79,6 +81,7 @@ materiasSchema.pre("save", function (next) {
   // Define a data de criação como a data atual antes de salvar
   this.criadoEm = Date.now();
   this.editadoEm = Date.now();
+  this.views = 0;
 
   if (process.env.NODE_ENV === "development") this.start = Date.now();
 

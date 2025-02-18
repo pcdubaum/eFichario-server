@@ -51,6 +51,13 @@ exports.pegarTodosUsuarios = catchAsync(async (req, res, next) => {
       }
     });
   });
+
+  exports.updateUser = catchAsync(async (req, res, next) => {
+    res.status(505).json({
+      status: 'error',
+      erros: 'not implemented'
+    })
+  });
   
   exports.removeUser = catchAsync(async (req, res, next) => {
 

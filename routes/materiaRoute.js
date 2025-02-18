@@ -17,8 +17,8 @@ router.route('/stats')
   .get(materiaController.stats); // Obtém estatísticas das matérias
 
 // Rota para obter uma disciplina específica pelo ID da matéria
-router.route('/materia/:id')
-  .get(materiaController.getDisciplina); // Obtém uma disciplina específica
+//router.route('/materia/:id')
+//  .get(materiaController.getDisciplina); // Obtém uma disciplina específica
 
 // Rota para obter, atualizar ou deletar uma matéria pelo ID
 router.route('/:id')

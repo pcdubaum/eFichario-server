@@ -23,8 +23,13 @@ exports.getAllMaterias = cathAsync(async (req, res, next) => {
 
 // Rota para obter uma materia específica pelo seu ID
 exports.getMateria = cathAsync(async (req, res, next) => {
-  // Consulta o banco de dados para encontrar uma lei pelo seu ID
-  const materia = await Materia.findById(req.params.id);
+
+  const materia = await Materia.findOneAndUpdate(
+    { _id: req.params.id }, // Filtro para encontrar o documento
+    { $inc: { views: 1 } }, // Incrementa o campo 'views' em 1
+    { new: true } // Retorna o documento atualizado
+  );
+
 
   if (!materia) {
     new AppError("Não foi possível encontrar o recursos", 404);
@@ -34,7 +39,7 @@ exports.getMateria = cathAsync(async (req, res, next) => {
   res.status(200).json({ materia: materia });
 });
 
-exports.getDisciplina = cathAsync(async (req, res, next) => {
+/*exports.getDisciplina = cathAsync(async (req, res, next) => {
   const stats = await Materia.aggregate([
     [
       {
@@ -53,7 +58,7 @@ exports.getDisciplina = cathAsync(async (req, res, next) => {
       stats,
     },
   });
-});
+});*/
 
 exports.postMateria = cathAsync(async (req, res) => {
   // Cria uma nova materia com base nos dados do corpo da solicitação

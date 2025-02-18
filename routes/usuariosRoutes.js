@@ -9,19 +9,20 @@ router.post('/login', authController.login);
 router.post('/logoff', authController.logoff);
 
 // Protect all routes after this middleware
-//router.use(authController.protect);
+router.use(authController.protect);
 
 router
 .route('/')
 .get(usuarioController.pegarTodosUsuarios)
-.post(authController.protect, usuarioController.createUser);
+.post(usuarioController.createUser);
 
-// Protect all routes after this middleware
-router.use(authController.protect);
+// Middleware para restringir a administradores e desenvolvedores
+router.use(authController.restrictTo('admin', 'dev'));
 
 router
-.route('/:id', authController.restrictTo('admin', 'dev'))
-.delete(usuarioController.removeUser);
+  .route('/:id')
+  .patch(usuarioController.updateUser) // Adicionando atualização de usuário
+  .delete(usuarioController.removeUser);
 
 router.get('/me', usuarioController.getMe, usuarioController.getUser);
 
