@@ -57,8 +57,7 @@ app.use(
         'materiasd',
         'ratingsAverage',
         'maxGroupSize',
-        'difficulty',
-        'price'
+        'difficulty'
       ]
     })
   );
