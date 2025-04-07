@@ -15,6 +15,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const leiRouter = require('./routes/leiRoutes');
 const usuarioRouter = require('./routes/usuariosRoutes');
 const materiaRouter = require('./routes/materiaRoute');
+const anotacaoRouter = require('./routes/anotacaoRouter');
 
 
 const app = express();
@@ -72,6 +73,7 @@ app.use(express.static(`${__dirname}/public`));
 app.use('/api/v2/leis', leiRouter);
 app.use('/api/v2/usuarios', usuarioRouter);
 app.use('/api/v2/materias', materiaRouter);
+app.use('/api/v2/anotacoes', anotacaoRouter);
 
 // Print the application's environment (usually 'development' or 'production')
 if(process.env.NODE_ENV === 'development')

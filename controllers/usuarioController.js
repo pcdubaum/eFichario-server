@@ -14,7 +14,6 @@ exports.pegarTodosUsuarios = catchAsync(async (req, res, next) => {
   
     const usuarios = await features.query;
 
-        // Responde com um código de status 200 e um objeto JSON contendo as leis encontradas
         res.status(200).json({ usuarios });
   });
 
