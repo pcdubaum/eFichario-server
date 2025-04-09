@@ -20,7 +20,7 @@ exports.getAnotacao = cathAsync(async (req, res, next) => {
 exports.createAnotacao = cathAsync(async (req, res, next) => {
 
     // Cria uma nova lei com base nos dados do corpo da solicitação
-    const newLei = await Lei.create(req.body);
+    const newLei = await Anotacao.create(req.body);
 
     if(!newLei){ new AppError('Não foi possível encontrar a anotação', 404)};
 
@@ -33,7 +33,7 @@ exports.createAnotacao = cathAsync(async (req, res, next) => {
 });
 
 exports.deleteAnotacao = cathAsync(async (req, res, next) => {
-    const user = await Materia.findByIdAndDelete(req.params.id);
+    const user = await Anotacao.findByIdAndDelete(req.params.id);
   
     if (!user) {
       return next(new AppError("Não há anotação com essa ID", 404));
@@ -46,7 +46,7 @@ exports.deleteAnotacao = cathAsync(async (req, res, next) => {
   });
   
   exports.updateAnotacao = cathAsync(async (req, res, next) => {
-    const materia = await Materia.findByIdAndUpdate(req.params.id, req.body, {
+    const materia = await Anotacao.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
   

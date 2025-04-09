@@ -1,4 +1,5 @@
 const Materia = require("./../models/materiaModel");
+const Anotacao = require("./../models/anotacaoModel");
 const APIFeature = require("../utils/apiFeatures");
 const cathAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
@@ -30,13 +31,14 @@ exports.getMateria = cathAsync(async (req, res, next) => {
     { new: true } // Retorna o documento atualizado
   );
 
+  const anotacoes = await Anotacao.find({ materiaId: req.params.idAutor });
 
   if (!materia) {
-    new AppError("Não foi possível encontrar o recursos", 404);
+    return next(new AppError("Não foi possível encontrar o recurso", 404));
   }
 
   // Responde com um código de status 200 e um objeto JSON contendo a lei encontrada
-  res.status(200).json({ materia: materia });
+  res.status(200).json({ materia: materia, anotacoes: anotacao });
 });
 
 /*exports.getDisciplina = cathAsync(async (req, res, next) => {

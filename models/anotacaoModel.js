@@ -6,20 +6,20 @@ const anotacaoSchema = new mongoose.Schema({
 
      // ID do autor, é um número obrigatório
      autorId : {
-        type: Number,
+        type: String,
         required: true
     },
 
      // ID da aula, é um número obrigatório
      aulaId : {
-        type: Number,
+        type: String,
         required: true
     },
 
      // Data de criação da lei, é uma data gerada automaticamente antes de salvar
      criadoEm : [Date],
 
-     blocos: Array,
+     anotacoes: Array,
 
      notas: Array
 });
