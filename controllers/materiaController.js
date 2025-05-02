@@ -31,14 +31,14 @@ exports.getMateria = cathAsync(async (req, res, next) => {
     { new: true } // Retorna o documento atualizado
   );
 
-  const anotacoes = await Anotacao.find({ materiaId: req.params.idAutor });
+  const anotacoes = await Anotacao.findOne({ materiaId: req.params.idAutor });
 
   if (!materia) {
     return next(new AppError("Não foi possível encontrar o recurso", 404));
   }
 
   // Responde com um código de status 200 e um objeto JSON contendo a lei encontrada
-  res.status(200).json({ materia: materia, anotacoes: anotacao });
+  res.status(200).json({ materia: materia, anotacoes: anotacoes });
 });
 
 /*exports.getDisciplina = cathAsync(async (req, res, next) => {
