@@ -17,15 +17,13 @@ const DB = process.env.DATABASE.replace(
 
 // Connect to the MongoDB database using Mongoose
 mongoose.connect(DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
-    if (process.env.NODE_ENV === 'development') {
-        console.log('✅ DB conectada com sucesso');
-    }
+
+}).then(con => {
+    console.log('DB Conectada'); // Mensagem de log de sucesso na conexão
+    
 }).catch(error => {
-    console.error('❌ Erro ao conectar ao MongoDB:', error);
-    process.exit(1); // Importante: sair para evitar app quebrado rodando
+    console.error('Erro na conexão com o banco de dados:', error); // Mensagem de log em caso de erro na conexão
+    process.exit(1);
 });
 
 // Start the Express server and make it listen on the port specified in the environment variables
