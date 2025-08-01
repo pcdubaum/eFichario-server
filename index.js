@@ -19,7 +19,7 @@ const DB = process.env.DATABASE.replace(
 mongoose.connect(DB, {
 
 }).then(con => {
-    if(process.env.NODE_ENV === 'development') {
+    if(process.env.NODEENV === 'development') {
         console.log('DB Conectada'); // Mensagem de log de sucesso na conexão
     }
     else {
@@ -27,7 +27,7 @@ mongoose.connect(DB, {
     }
     
 }).catch(error => {
-    if(process.env.NODE_ENV === 'development') {
+    if(process.env.NODEENV === 'development') {
         console.error('Erro na conexão com o banco de dados:', error); // Mensagem de log em caso de erro na conexão
     }
     else {
