@@ -19,11 +19,20 @@ const DB = process.env.DATABASE.replace(
 mongoose.connect(DB, {
 
 }).then(con => {
-    console.log('DB Conectada'); // Mensagem de log de sucesso na conexão
+    if(process.env.NODE_ENV === 'development') {
+        console.log('DB Conectada'); // Mensagem de log de sucesso na conexão
+    }
+    else {
+        
+    }
     
 }).catch(error => {
-    console.error('Erro na conexão com o banco de dados:', error); // Mensagem de log em caso de erro na conexão
-    process.exit(1);
+    if(process.env.NODE_ENV === 'development') {
+        console.error('Erro na conexão com o banco de dados:', error); // Mensagem de log em caso de erro na conexão
+    }
+    else {
+        console.error('Erro na conexão com o banco de dados:', error); // Mensagem de log em caso de erro na conexão
+    }
 });
 
 // Start the Express server and make it listen on the port specified in the environment variables
