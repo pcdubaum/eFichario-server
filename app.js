@@ -65,6 +65,7 @@ app.use(
 
   app.use(compression());
 
+  
 // Configure the Express application to handle JSON data and enable CORS
 app.use(express.static(`${__dirname}/public`));
 
@@ -75,6 +76,8 @@ app.use('/api/v2/usuarios', usuarioRouter);
 app.use('/api/v2/materias', materiaRouter);
 app.use('/api/v2/anotacoes', anotacaoRouter);
 
+
+
 // Print the application's environment (usually 'development' or 'production')
 if(process.env.NODE_ENV === 'development')
   console.log('A aplicação está sendo executada em modo de desenvolvimento!');
@@ -82,12 +85,20 @@ if(process.env.NODE_ENV === 'development')
 if(process.env.NODE_ENV === 'production')
   console.log('A aplicação está rodando na pordta: ' + process.env.PORT);
 
+
 // Send a erro, request should not reach this point.
-app.all('*', (req, res, next) =>{
-    next(new AppError(`Não é possível encontrar a url ${req.originalUrl} nesse server!`, 404));
+app.use((err, req, res, next) => {
+  res.status(err.statusCode || 500).json({
+    status: err.status || 'error',
+    message: err.message || 'Erro interno no servidor'
+  });
 });
 
+
+
+
 app.use(globalErrorHandler);
+
 
 // Export the Express application to be used in other files 
 module.exports = app;

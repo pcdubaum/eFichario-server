@@ -4,6 +4,32 @@ const dotenv = require('dotenv'); // Import the dotenv library to load environme
 dotenv.config({ path: './config.env' }); // Configure dotenv to load environment variables from the config.env file
 const app = require('./app'); // Import the Express application configured from the app.js file
 
+//require('dotenv').config();
+const { MongoClient } = require('mongodb');
+
+const templateUri = "mongodb://{user}:{pass}@{host}:{port}/{db}?authSource={db}";
+
+const mongoUri = templateUri
+  .replace("{user}", process.env.DBUSERNAME)
+  .replace("{pass}", process.env.PASSWORD)
+  .replace("{host}", process.env.DOMAIN)
+  .replace("{port}", process.env.DBPORT)
+  .replace(/{db}/g, process.env.DB); // 'g' para substituir todos
+  
+const client = new MongoClient(mongoUri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+client.connect()
+  .then(() => {
+    console.log("Conectado com sucesso!");
+    
+  })
+  .catch(err => {
+    console.error("Erro de conexão:", err);
+  });
+/*
 // Define the database URL, replacing the password and username with environment variables
 const DB = process.env.DATABASE.replace(
     '<PASSWORD>',
@@ -34,7 +60,7 @@ mongoose.connect(DB, {
         console.error('Erro na conexão com o banco de dados:', error); // Mensagem de log em caso de erro na conexão
     }
 });
-
+*/
 // Start the Express server and make it listen on the port specified in the environment variables
 const server = app.listen(process.env.PORT, (err) => {
     if (err)
