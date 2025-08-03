@@ -4,9 +4,6 @@ const dotenv = require('dotenv'); // Import the dotenv library to load environme
 dotenv.config({ path: './config.env' }); // Configure dotenv to load environment variables from the config.env file
 const app = require('./app'); // Import the Express application configured from the app.js file
 
-//require('dotenv').config();
-const { MongoClient } = require('mongodb');
-
 const templateUri = "mongodb://{user}:{pass}@{host}:{port}/{db}?authSource={db}";
 
 const mongoUri = templateUri
@@ -14,21 +11,16 @@ const mongoUri = templateUri
   .replace("{pass}", process.env.PASSWORD)
   .replace("{host}", process.env.DOMAIN)
   .replace("{port}", process.env.DBPORT)
-  .replace(/{db}/g, process.env.DB); // 'g' para substituir todos
-  
-const client = new MongoClient(mongoUri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+  .replace(/{db}/g, process.env.DB); // substitui todos os {db}
 
-client.connect()
-  .then(() => {
-    console.log("Conectado com sucesso!");
-    
-  })
-  .catch(err => {
-    console.error("Erro de conexão:", err);
-  });
+// Conexão usando Mongoose
+mongoose.connect(mongoUri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('✅ Conectado ao MongoDB com Mongoose!'))
+  .catch((err) => console.error('❌ Erro ao conectar com Mongoose:', err));
+
 /*
 // Define the database URL, replacing the password and username with environment variables
 const DB = process.env.DATABASE.replace(
